@@ -1,5 +1,6 @@
 
 class King
+  attr_accessor :color, :location, :potential_moves, :symbol
   
   def initialize(color, location)
     @color = color
