@@ -5,6 +5,11 @@ class Knight
     @color = color
     @location = location
     @potential_moves = update_moves
+    if color == "white"
+      @symbol = "\u2658"
+    else
+      @symbol = "\u265e"
+    end
   end
 
   def update_moves

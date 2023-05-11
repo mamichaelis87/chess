@@ -5,6 +5,11 @@ class Queen
     @color = color
     @location = location
     @potential_moves = update_moves
+    if color == "white"
+      @symbol = "\u2655"
+    else
+      @symbol = "\u265b"
+    end
   end
 
   def update_moves
