@@ -26,17 +26,17 @@ class Game
   def display_board
     row_number = 8
     @board.each do |row|
-      puts "#{row_number}|"
-      row_number -= 1
+      row_display = ""
       row.each do |square|
         if square
-          puts "#{square.symbol}"
+          row_display << "#{square.symbol}|"
         else
-          puts "  "
+          row_display << " |"
         end
       end
+      puts "#{row_number}|#{row_display}"
+      row_number -= 1
     end
   end
 
-  end
 end
