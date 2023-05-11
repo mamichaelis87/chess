@@ -1,0 +1,88 @@
+Chess Game Plan
+
+step 1: Create initial pieces to the game 
+  Create Board 
+    should this be part of the Game class? or it's own class?
+    8x8, 8 arrays of 8
+    gets letter and number, converts it to a coordinate
+    would it help to have hashes containing all pieces of a particular color?
+      a 'white' hash could be iterated over to see if the black king is in check
+  Create Pawn class
+  Create Rook class
+  Create Knight class
+  Create Bishop class
+  Create King class
+  Create Queen class
+
+step 2: Write psuedocode for each piece's move method
+  general
+    white moves first
+    each piece has a starting location, and potential moves.  
+    the potential moves update with each move
+    cannot move over another piece (except knight)
+    cannot move a piece to a position that puts own king in check
+    cannot move onto a square with their own piece
+  Pawn  
+    moves vertically forward one
+    conditional moves
+      can move two if it is the first move
+      can move diagonally forward if attacking enemy piece
+      becomes new piece if it reaches other side
+      en passant
+        if another pawn does the double move and leaps this pawns abiility 
+          to capture it, this pawn can move diagonlly to where it could 
+          have captured the other pawn, capturing it in the process, if 
+          done immediately after the other pawn's move
+  Rook
+    moves vertically or horizontally any number of spaces
+    conditional moves
+      castling
+        must be this rook's and king's first move
+        cannot be any pieces between rook and king
+        king cannot be in or pass through check
+        king moves two squares towards rook
+        rook comes to opposite side of king
+
+  Knight
+    check knight_moves code
+    moves either two vertically and one horizontally or
+                 two horizontally and one vertically
+  Bishop
+    moves diagonally any direction any number of spaces
+  Queen
+    moves diagonally any direction any number of spaces
+    moves horizontally any number of spaces
+    moves vertically any number of spaces
+  King
+    moves diagonally any direction one space
+    moves horizontally one space
+    moves vertically one space
+  
+
+  
+
+step 3: write psuedocode for game logic methods
+  when a piece takes an opponent piece
+  end game
+    checkmate
+    draw
+      stalemate
+        king is not in check, but does not have a legal move
+      not enough pieces to force a checkmate
+      exact position repeated 3 times
+      50 consecutive moves without moving pawn or capturing a piece
+    resignation
+  check 
+    when an opponent piece can reach your king on next turn
+    how to get out
+      move king out of check
+      block check with another piece
+      capture piece blocking king
+
+step 4: turn psuedocode into Ruby code
+
+step 5: consolidate code, giving each method one function
+
+step 6: write tests
+
+step 7: add saving method for the board
