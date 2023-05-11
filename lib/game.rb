@@ -37,6 +37,7 @@ class Game
       puts "#{row_number}|#{row_display}"
       row_number -= 1
     end
+    puts "  a b c d e f g h"
   end
 
 end
