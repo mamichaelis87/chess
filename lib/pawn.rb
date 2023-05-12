@@ -1,6 +1,6 @@
 
 class Pawn 
-  attr_accessor :color, :location, :potential_moves, :symbol
+  attr_accessor :color, :location, :potential_moves, :symbol, :first_move
   
   def initialize(color, location) 
     @color = color
@@ -11,9 +11,12 @@ class Pawn
     else
       @symbol = "\u265f"
     end
+    @first_move = true
   end
 
   def update_moves
-    #updates potential moves based on location and updates 
+    #updates potential moves based on location and updates
+    #moves up one if white, down one if black
+    #moves up two if first move
   end
 end

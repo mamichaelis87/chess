@@ -23,6 +23,18 @@ class Game
     return board
   end
 
+  def update_all_moves
+    #updates potential moves for each piece, probably will only be used
+    #at the beginning of a game after set up
+    @board.each do |row|
+      row.each do |square|
+        if square
+          square.update_moves
+        end
+      end
+    end
+  end
+
   def display_board
     row_number = 8
     @board.each do |row|

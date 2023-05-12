@@ -1,7 +1,7 @@
 
 class Rook 
-  attr_accessor :color, :location, :potential_moves, :symbol
-  
+  attr_accessor :color, :location, :potential_moves, :symbol, :first_move
+
   def initialize(color, location)
     @color = color
     @location = location 
@@ -11,6 +11,7 @@ class Rook
     else
       @symbol = "\u265c"
     end
+    @first_move = true
   end
 
   def update_moves
