@@ -52,11 +52,15 @@ class Pawn
     #checks if there are enemies on the diagonals
     true
   end
+
+  private 
   
   def occupied#(current_board) #just a holder method for now
     #checks if there is a piece obstructing the path
     false
   end
+
+  
 
   def create_blank_board
     array = []
