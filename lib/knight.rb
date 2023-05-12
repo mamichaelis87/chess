@@ -15,7 +15,22 @@ class Knight
   end
 
   def update_moves
-    #updates potential moves based on location and updates 
+    #updates potential moves based on location and updatesif location[0] + 2 <= 7
+    new_moves = []
+    new_moves << [location[0] + 2, location[1] + 1] if @blank_board.include?([location[0] + 2, location[1] + 1])
+    new_moves << [location[0] + 2, location[1] - 1] if @blank_board.include?([location[0] + 2, location[1] - 1])
+    new_moves << [location[0] - 2, location[1] + 1] if @blank_board.include?([location[0] - 2, location[1] + 1])
+    new_moves << [location[0] - 2, location[1] - 1] if @blank_board.include?([location[0] - 2, location[1] - 1])
+    new_moves << [location[0] - 1, location[1] + 2] if @blank_board.include?([location[0] - 1, location[1] + 2])
+    new_moves << [location[0] - 1, location[1] - 2] if @blank_board.include?([location[0] - 1, location[1] - 2])
+    new_moves << [location[0] + 1, location[1] + 2] if @blank_board.include?([location[0] + 1, location[1] + 2])
+    new_moves << [location[0] + 1, location[1] - 2] if @blank_board.include?([location[0] + 1, location[1] - 2])
+     
+    new_moves.each do |square|
+      if occupied
+        #if same color, remove from new_moves
+      end
+    end
   end
 
   private 
@@ -39,5 +54,7 @@ class Knight
     return array
   end
 
-  
 end
+
+white_left_knight = Knight.new("white", [1,0])
+p white_left_knight.potential_moves
