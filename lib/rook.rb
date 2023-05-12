@@ -15,8 +15,30 @@ class Rook
     @first_move = true
   end
 
-  def update_moves
+  def update_moves#(current_board)
     #updates potential moves based on location and updates 
+    new_moves = []
+    #cycle through column and add squares
+      #if it is same color, stop
+      #if it is enemy color, add square and then stop
+      [0,1,2,3,4,5,6,7].each do |row|
+        if occupied
+          #if matches color then break
+          #if enemy color, add to the moves and then break
+        else
+          new_moves << [@location[0], row]
+        end
+      end
+      [0,1,2,3,4,5,6,7].each do |column|
+        if occupied
+          #if matches color then break
+          #if enemy color, add to the moves and then break
+        else
+          new_moves << [column, @location[1]]
+        end
+      end
+      new_moves.delete(@location)
+      @potential_moves = new_moves
   end
 
   private 
@@ -41,3 +63,6 @@ class Rook
   end
 
 end
+
+black_left_rook = Rook.new("black", [0,7])
+p black_left_rook.potential_moves
