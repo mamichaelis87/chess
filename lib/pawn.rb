@@ -16,48 +16,87 @@ class Pawn
     
   end
 
-  def update_moves#(current_board)
+  def update_moves(current_board = @blank_board)
     #updates potential moves based on location and updates
     #moves up one if white, down one if black
     #moves up two if first move
     #does not yet account for en passant move
     new_moves = []
     if @color == "white"
-      unless occupied#([@location[0], @location[1]-1], current_board)
+      unless occupied(current_board, [@location[0], @location[1]+1])
         new_moves << [@location[0], @location[1]+1] if @blank_board.include?([@location[0], @location[1]+1])
         if @first_move
-          new_moves << [@location[0], @location[1]+2] if @blank_board.include?([@location[0], @location[1]+2])
+          unless occupied(current_board, [@location[0], @location[1]+2])
+            new_moves << [@location[0], @location[1]+2] if @blank_board.include?([@location[0], @location[1]+2])
+          end
         end
       end
-      if could_attack#(current_board)
-        new_moves << [@location[0]+1, @location[1]+1] if @blank_board.include?([@location[0]+1, @location[1]+1])
+      if could_attack_left(current_board)
         new_moves << [@location[0]-1, @location[1]+1] if @blank_board.include?([@location[0]-1, @location[1]+1])
+      elsif could_attack_right(current_board)
+        new_moves << [@location[0]+1, @location[1]+1] if @blank_board.include?([@location[0]+1, @location[1]+1])
       end
     elsif @color == "black"
-      unless occupied#([@location[0], @location[1]-1], current_board)
+      unless occupied(current_board, [@location[0], @location[1]-1])
         new_moves << [@location[0], @location[1]-1] if @blank_board.include?([@location[0], @location[1]-1])
         if @first_move
-          new_moves << [@location[0], @location[1]-2] if @blank_board.include?([@location[0], @location[1]-2])
+          unless occupied(current_board, [@location[0], @location[1] - 2])
+            new_moves << [@location[0], @location[1]-2] if @blank_board.include?([@location[0], @location[1]-2])
+          end
         end
       end
-      if could_attack#(current_board)
-        new_moves << [@location[0]+1, @location[1]-1] if @blank_board.include?([@location[0]+1, @location[1]-1])
+      if could_attack_left(current_board)
         new_moves << [@location[0]-1, @location[1]-1] if @blank_board.include?([@location[0]-1, @location[1]-1])
+      elsif could_attack_right(current_board)
+        new_moves << [@location[0]+1, @location[1]-1] if @blank_board.include?([@location[0]+1, @location[1]-1])
       end
     end 
     @potential_moves = new_moves
   end
 
-  def could_attack#(current_board) #just a holder method for now
-    #checks if there are enemies on the diagonals
-    true
+  def could_attack_left(current_board)
+    if @color == "white"
+      piece = current_board[@location[0] - 1][@location[1] + 1]
+    else 
+      piece = current_board[@location[0] - 1][@location[1] - 1]
+    end
+    if piece 
+      if piece.color != @color
+        return true
+      end
+    else 
+      false
+    end
+  end
+  
+  def could_attack_right(current_board)
+    if @color == "white"
+      piece = current_board[@location[0] + 1][@location[1] + 1]
+    else
+      piece = current_board[@location[0] + 1][@location[1] - 1]
+    end
+    if piece 
+      if piece.color != @color
+        return true
+      end
+    else
+      false
+    end
   end
 
   private 
-  
-  def occupied#(current_board) #just a holder method for now
+
+  def occupied(current_board, square)
     #checks if there is a piece obstructing the path
-    false
+    piece = current_board[square[0]][square[1]]
+    if piece
+      if piece.color == "black"
+        return "black"
+      elsif piece.color == "white"
+        return "white"
+      end
+    end
+    nil
   end
 
   
