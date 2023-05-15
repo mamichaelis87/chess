@@ -88,7 +88,12 @@ class Pawn
 
   def occupied(current_board, square)
     #checks if there is a piece obstructing the path
-    piece = current_board[square[0]][square[1]]
+    if current_board == @blank_board
+      return nil
+    end
+ 
+      piece = current_board[square[0]][square[1]]
+    
     if piece
       if piece.color == "black"
         return "black"

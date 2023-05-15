@@ -58,9 +58,20 @@ class Bishop
 
   private 
 
-  def occupied#(current_board) #just a holder method for now
+  def occupied(current_board, square)
     #checks if there is a piece obstructing the path
-    false
+    if current_board == @blank_board
+      return nil
+    end
+    piece = current_board[square[0]][square[1]]
+    if piece
+      if piece.color == "black"
+        return "black"
+      elsif piece.color == "white"
+        return "white"
+      end
+    end
+    nil
   end
 
   def create_blank_board
