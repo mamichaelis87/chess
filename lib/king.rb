@@ -1,17 +1,10 @@
 
 class King
-  attr_accessor :color, :location, :potential_moves, :symbol, :first_move, :blank_board
+  attr_accessor :potential_moves, :symbol, :first_move
 
   def initialize(color, location)
-    @color = color
-    @location = location
-    @blank_board = create_blank_board
+    super
     @potential_moves = update_moves
-    if color == "white"
-      @symbol = "\u2654"
-    else
-      @symbol = "\u265a"
-    end
     @first_move = true
   end
 
@@ -45,37 +38,6 @@ class King
     end
     
     @potential_moves = new_moves
-  end
-
-  private 
-
-  def occupied(current_board, square)
-    #checks if there is a piece obstructing the path
-    if current_board == @blank_board
-      return nil
-    end
-    piece = current_board[square[0]][square[1]]
-    if piece
-      if piece.color == "black"
-        return "black"
-      elsif piece.color == "white"
-        return "white"
-      end
-    end
-    nil
-
-  def create_blank_board
-    array = []
-    width = 0
-    while width <= 7
-      height = 0
-      while height <= 7
-        array << [width, height]
-        height += 1
-      end
-      width += 1 
-    end
-    return array
   end
 
 end
