@@ -8,7 +8,7 @@ class Knight < Piece
     @potential_moves = update_moves
   end
 
-  def update_moves
+  def update_moves(current_board = @blank_board)
     #updates potential moves based on location and updatesif location[0] + 2 <= 7
     new_moves = []
     new_moves << [location[0] + 2, location[1] + 1] if @blank_board.include?([location[0] + 2, location[1] + 1])

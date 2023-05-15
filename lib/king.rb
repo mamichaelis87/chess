@@ -8,7 +8,7 @@ class King
     @first_move = true
   end
 
-  def update_moves
+  def update_moves(current_board = @blank_board)
     #updates potential moves based on location and updates
     new_moves = []
 

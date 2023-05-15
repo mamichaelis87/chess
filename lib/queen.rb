@@ -7,7 +7,7 @@ class Queen
     @potential_moves = update_moves
   end
 
-  def update_moves
+  def update_moves(current_board = @blank_board)
     #updates potential moves based on location and updates 
     #for diagonals (from bishop)
     new_moves = []
