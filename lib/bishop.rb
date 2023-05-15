@@ -12,37 +12,57 @@ class Bishop
     new_moves = []
     square = [@location[0] + 1, @location[1] + 1]
     while @blank_board.include?(square) #adds up right squares
-      if occupied
-        #if same color, break, if enemy color, add then break
+      if occupied(current_board, square) == @color
+        #if same color, break, if not then add square and then break
+        break
+      elsif occupied(current_board, square)
+        new_moves << [square[0], square[1]]
+        break
+      else
+        new_moves << [square[0], square[1]] 
       end
-      new_moves << [square[0], square[1]] 
       square[0] += 1 
       square[1] += 1
     end
     square = [@location[0] + 1, @location[1] - 1]
     while @blank_board.include?(square) #adds down right squares
-      if occupied
-        #if same color, break, if enemy color, add then break
+      if occupied(current_board, square) == @color
+        #if same color, break, if not then add square and then break
+        break
+      elsif occupied(current_board, square)
+        new_moves << [square[0], square[1]]
+        break
+      else
+        new_moves << [square[0], square[1]] 
       end
-      new_moves << [square[0], square[1]] 
       square[0] += 1 
       square[1] -= 1
     end
     square = [@location[0] - 1, @location[1] + 1]
     while @blank_board.include?(square) #adds up left squares
-      if occupied
-        #if same color, break, if enemy color, add then break
+      if occupied(current_board, square) == @color
+        #if same color, break, if not then add square and then break
+        break
+      elsif occupied(current_board, square)
+        new_moves << [square[0], square[1]]
+        break
+      else
+        new_moves << [square[0], square[1]] 
       end
-      new_moves << [square[0], square[1]] 
       square[0] -= 1 
       square[1] += 1
     end
     square = [@location[0] - 1, @location[1] - 1]
     while @blank_board.include?(square) #adds down left squares
-      if occupied
-        #if same color, break, if enemy color, add then break
+      if occupied(current_board, square) == @color
+        #if same color, break, if not then add square and then break
+        break
+      elsif occupied(current_board, square)
+        new_moves << [square[0], square[1]]
+        break
+      else
+        new_moves << [square[0], square[1]] 
       end
-      new_moves << [square[0], square[1]] 
       square[0] -= 1 
       square[1] -= 1
     end
