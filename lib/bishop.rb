@@ -1,6 +1,6 @@
 
 class Bishop
-  attr_accessor :color, :location, :potential_moves, :symbol
+  attr_accessor :color, :location, :potential_moves, :symbol, :blank_board
 
   def initialize(color, location)
     @color = color
@@ -16,6 +16,32 @@ class Bishop
 
   def update_moves
     #updates potential moves based on location and updates 
+    new_moves = []
+    square = [@location[0] + 1, @location[1] + 1]
+    while @blank_board.include?(square) #adds up right squares
+      new_moves << [square[0], square[1]] if @blank_board.include?(square)
+      square[0] += 1 
+      square[1] += 1
+    end
+    square = [@location[0] + 1, @location[1] - 1]
+    while @blank_board.include?(square) #adds down right squares
+      new_moves << [square[0], square[1]] if @blank_board.include?(square)
+      square[0] += 1 
+      square[1] -= 1
+    end
+    square = [@location[0] - 1, @location[1] + 1]
+    while @blank_board.include?(square) #adds up left squares
+      new_moves << [square[0], square[1]] if @blank_board.include?(square)
+      square[0] -= 1 
+      square[1] += 1
+    end
+    square = [@location[0] - 1, @location[1] - 1]
+    while @blank_board.include?(square) #adds down left squares
+      new_moves << [square[0], square[1]] if @blank_board.include?(square)
+      square[0] -= 1 
+      square[1] -= 1
+    end
+    @potential_moves = new_moves
   end
 
   private 
@@ -38,6 +64,8 @@ class Bishop
     end
     return array
   end
-
-
 end
+
+left_white_bishop = Bishop.new("white", [2,0])
+p left_white_bishop.potential_moves
+
