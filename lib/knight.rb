@@ -21,10 +21,12 @@ class Knight < Piece
     new_moves << [location[0] + 1, location[1] - 2] if @blank_board.include?([location[0] + 1, location[1] - 2])
      
     new_moves.each do |square|
-      if occupied
+      if occupied(current_board, square) == @color
         #if same color, remove from new_moves
+        new_moves.delete(square)
       end
     end
+    @potential_moves = new_moves
   end
 
 end
