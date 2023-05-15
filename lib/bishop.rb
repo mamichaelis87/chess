@@ -19,25 +19,37 @@ class Bishop
     new_moves = []
     square = [@location[0] + 1, @location[1] + 1]
     while @blank_board.include?(square) #adds up right squares
-      new_moves << [square[0], square[1]] if @blank_board.include?(square)
+      if occupied
+        #if same color, break, if enemy color, add then break
+      end
+      new_moves << [square[0], square[1]] 
       square[0] += 1 
       square[1] += 1
     end
     square = [@location[0] + 1, @location[1] - 1]
     while @blank_board.include?(square) #adds down right squares
-      new_moves << [square[0], square[1]] if @blank_board.include?(square)
+      if occupied
+        #if same color, break, if enemy color, add then break
+      end
+      new_moves << [square[0], square[1]] 
       square[0] += 1 
       square[1] -= 1
     end
     square = [@location[0] - 1, @location[1] + 1]
     while @blank_board.include?(square) #adds up left squares
-      new_moves << [square[0], square[1]] if @blank_board.include?(square)
+      if occupied
+        #if same color, break, if enemy color, add then break
+      end
+      new_moves << [square[0], square[1]] 
       square[0] -= 1 
       square[1] += 1
     end
     square = [@location[0] - 1, @location[1] - 1]
     while @blank_board.include?(square) #adds down left squares
-      new_moves << [square[0], square[1]] if @blank_board.include?(square)
+      if occupied
+        #if same color, break, if enemy color, add then break
+      end
+      new_moves << [square[0], square[1]] 
       square[0] -= 1 
       square[1] -= 1
     end
