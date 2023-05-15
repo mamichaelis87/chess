@@ -1,6 +1,6 @@
 
 class King
-  attr_accessor :color, :location, :potential_moves, :symbol, :first_move
+  attr_accessor :color, :location, :potential_moves, :symbol, :first_move, :blank_board
 
   def initialize(color, location)
     @color = color
@@ -16,7 +16,35 @@ class King
   end
 
   def update_moves
-    #updates potential moves based on location and updates 
+    #updates potential moves based on location and updates
+    new_moves = []
+
+    unless occupied
+      new_moves << [@location[0] - 1, @location[1] - 1] if @blank_board.include?([@location[0] - 1, @location[1] - 1])
+    end
+    unless occupied
+      new_moves << [@location[0] - 1, @location[1]] if @blank_board.include?([@location[0] - 1, @location[1]])
+    end
+    unless occupied
+      new_moves << [@location[0] - 1, @location[1] + 1] if @blank_board.include?([@location[0] - 1, @location[1]])
+    end
+    unless occupied
+      new_moves << [@location[0], @location[1] + 1] if @blank_board.include?([@location[0], @location[1] + 1])
+    end
+    unless occupied
+      new_moves << [@location[0] + 1, @location[1] + 1] if @blank_board.include?([@location[0] + 1, @location[1] + 1])
+    end
+    unless occupied
+      new_moves << [@location[0] + 1, @location[1]] if @blank_board.include?([@location[0] + 1, @location[1]])
+    end
+    unless occupied
+      new_moves << [@location[0] + 1, @location[1] - 1] if @blank_board.include?([@location[0] + 1, @location[1] - 1])
+    end
+    unless occupied
+      new_moves << [@location[0], @location[1] - 1] if @blank_board.include?([@location[0], @location[1] - 1])
+    end
+    
+    @potential_moves = new_moves
   end
 
   private 
@@ -40,5 +68,7 @@ class King
     return array
   end
 
-
 end
+
+white_king = King.new("white", [4,0])
+p white_king.potential_moves
