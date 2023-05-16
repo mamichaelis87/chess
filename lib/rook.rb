@@ -17,33 +17,65 @@ class Rook < Piece
   def update_moves(current_board = @blank_board)
     #updates potential moves based on location and updates 
     new_moves = []
-    #cycle through column and add squares
-      #if it is same color, stop
-      #if it is enemy color, add square and then stop
-      [0,1,2,3,4,5,6,7].each do |row|
-        if occupied(current_board, [@location[0], row]) == @color
-          break
-        elsif occupied(current_board, [@location[0], row])
-          new_moves << [@location[0], row]
-          break
-        else
-          new_moves << [@location[0], row]
-        end
-      end
-      [0,1,2,3,4,5,6,7].each do |column|
-        if occupied(current_board, [column, @location[1]]) == @color
-          break
-        elsif occupied(current_board, [column, @location[1]])
-          new_moves << [column, @location[1]]
-          break
-        else
-          new_moves << [column, @location[1]]
-        end
-      end
-      new_moves.delete(@location)
-      @potential_moves = new_moves
-  end
 
+    square = [@location[0], @location[1] + 1]
+    while @blank_board.include?(square) #adds up squares
+      if occupied(current_board, square) == @color
+        #if same color, break, if not then add square and then break
+        break
+      elsif occupied(current_board, square)
+        new_moves << [square[0], square[1]]
+        break
+      else
+        new_moves << [square[0], square[1]] 
+      end
+      square[1] += 1
+    end
+
+    square = [@location[0], @location[1] - 1]
+    while @blank_board.include?(square) #adds down squares
+      if occupied(current_board, square) == @color
+        #if same color, break, if not then add square and then break
+        break
+      elsif occupied(current_board, square)
+        new_moves << [square[0], square[1]]
+        break
+      else
+        new_moves << [square[0], square[1]] 
+      end
+      square[1] -= 1
+    end
+  
+
+    square = [@location[0] - 1, @location[1]]
+    while @blank_board.include?(square) #adds left squares
+      if occupied(current_board, square) == @color
+        #if same color, break, if not then add square and then break
+        break
+      elsif occupied(current_board, square)
+        new_moves << [square[0], square[1]]
+        break
+      else
+        new_moves << [square[0], square[1]] 
+      end
+      square[0] -= 1 
+    end
+
+    square = [@location[0] + 1, @location[1]]
+    while @blank_board.include?(square) #adds right squares
+      if occupied(current_board, square) == @color
+        #if same color, break, if not then add square and then break
+        break
+      elsif occupied(current_board, square)
+        new_moves << [square[0], square[1]]
+        break
+      else
+        new_moves << [square[0], square[1]] 
+      end
+      square[0] += 1 
+    end
+    @potential_moves = new_moves
+  end
 end
 
 # black_left_rook = Rook.new("black", [0,7])
