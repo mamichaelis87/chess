@@ -1,7 +1,7 @@
 require_relative 'piece.rb'
 
 class Queen < Piece
-  attr_accessor :potential_moves
+  attr_accessor :potential_moves, :symbol
 
   def initialize(color, location)
     super

@@ -1,7 +1,7 @@
 require_relative 'piece.rb'
 
 class Rook < Piece
-  attr_accessor :potential_moves, :first_move
+  attr_accessor :potential_moves, :first_move, :symbol
 
   def initialize(color, location)
     super
