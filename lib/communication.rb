@@ -1,11 +1,11 @@
 module Communication 
   def intro_message
-    puts "Welcome to terminal chess! It is played like normal chess, just on"\
-         "the terminal. (you probably figured that out without my help though)"\
-         "You will make moves based on the piece's letter/number coordinate."\
-         "For instance, if you want to move the left white knight, you would"\
-         "type 'b2'.  After you select a piece, you will enter a destination."\
-         "Once you select a piece, there is no going back, so think beforehand!"\
+    puts "Welcome to terminal chess! It is played like normal chess, just on\n"\
+         "the terminal. (you probably figured that out without my help though)\n"\
+         "You will make moves based on the piece's letter/number coordinate.\n"\
+         "For instance, if you want to move the left white knight, you would\n"\
+         "type 'b2'.  After you select a piece, you will enter a destination.\n"\
+         "Once you select a piece, there is no going back, so think beforehand!\n"\
          "Good luck, may the true chess wizard win!"
   end
 

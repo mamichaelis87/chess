@@ -4,7 +4,8 @@ require_relative 'knight.rb'
 require_relative 'bishop.rb'
 require_relative 'queen.rb'
 require_relative 'king.rb'
-require_relative 'player.rb'
+require_relative 'white_player.rb'
+require_relative 'black_player.rb'
 require_relative 'communication.rb'
 
 class Game
@@ -12,10 +13,10 @@ class Game
   attr_accessor :board
 
   def initialize
-    intro_message
+    # intro_message
+    @white = WhitePlayer.new
+    @black = BlackPlayer.new
     @board = new_board
-    @white = Player.new("White")
-    @black = Player.new("Black")
   end
   
   #game logic methods
@@ -25,18 +26,20 @@ class Game
       #take turn
       display_board
       take_turn
+      #switch player
     end
   end
 
   def turn(player)
+    #see if king is in check and notify player
     #ask for move
     #check to see if it is legal
       # - not occupied by own color piece
       # - does not move king into check
     #make move
     #if piece is captured, notify player
-    #see if king is in check and notify player
     #update all the moves
+    
   end
 
   def game_over
@@ -75,23 +78,31 @@ class Game
 
   def in_check(king)
     #checks to see if the king is in check
-      #iterates over all the pieces on the board and sees if king's location
+      #iterates over all the enemy pieces and sees if king's location
       #is in any of the potential moves
-    @board.each do |row|
-      row.each do |square|
-        if square
-          unless square.color == king.color
-            if square.potential_moves.include?(piece.location)
-              return true
-            end
-          end
+    if king.color == "white"
+      @black.pieces.each do |piece|
+        if piece.potential_moves.include?(king.location)
+          return true
         end
       end
+    elsif king.color == "black"
+      @white.pieces.each do |piece|
+        if piece.potential_moves.include?(king.location)
+          return true
+        end
+      end
+    else
+      return false
     end
   end
 
   def legal_move(player, piece, move)
     #space is in piece's potential moves
+    until piece.potential_moves.include?(move)
+      illegal_move_alert
+      get_destination_of_move
+    end
     #move does not put own king in check
   end
 
@@ -116,16 +127,27 @@ class Game
   end
 
   def new_board
-    new_board = [[Rook.new("white", [0,0]), Knight.new("white", [1,0]), Bishop.new("white", [2,0]), Queen.new("white", [3,0]), King.new("white", [4,0]), Bishop.new("white", [5,0]), Knight.new("white", [6,0]), Rook.new("white", [7,0])],
-             [Pawn.new("white", [0,1]), Pawn.new("white", [1,1]), Pawn.new("white", [2,1]), Pawn.new("white", [3,1]), Pawn.new("white", [4,1]), Pawn.new("white", [5,1]), Pawn.new("white", [6,1]), Pawn.new("white", [7,1])],
-             [nil, nil, nil, nil, nil, nil, nil, nil],
-             [nil, nil, nil, nil, nil, nil, nil, nil],
-             [nil, nil, nil, nil, nil, nil, nil, nil],
-             [nil, nil, nil, nil, nil, nil, nil, nil],
-             [Pawn.new("black", [0,6]), Pawn.new("black", [1,6]), Pawn.new("black", [2,6]), Pawn.new("black", [3,6]), Pawn.new("black", [4,6]), Pawn.new("black", [5,6]), Pawn.new("black", [6,6]), Pawn.new("black", [7,6])],
-             [Rook.new("black", [0,7]), Knight.new("black", [1,7]), Bishop.new("black", [2,7]), Queen.new("black", [3,7]), King.new("black", [4,7]), Bishop.new("black", [5,7]), Knight.new("black", [6,7]), Rook.new("black", [7,7])]]
+    new_board = [[@white.rook_one, @white.knight_one, @white.bishop_one, @white.queen, @white.king, @white.bishop_two, @white.knight_two, @white.rook_two],
+                [@white.pawn_one, @white.pawn_two, @white.pawn_three, @white.pawn_four, @white.pawn_five, @white.pawn_six, @white.pawn_seven, @white.pawn_eight],
+                [nil, nil, nil, nil, nil, nil, nil, nil],
+                [nil, nil, nil, nil, nil, nil, nil, nil],
+                [nil, nil, nil, nil, nil, nil, nil, nil],
+                [nil, nil, nil, nil, nil, nil, nil, nil],
+                [@black.pawn_one, @black.pawn_two, @black.pawn_three, @black.pawn_four, @black.pawn_five, @black.pawn_six, @black.pawn_seven, @black.pawn_eight],
+                [@black.rook_one, @black.knight_one, @black.bishop_one, @black.queen, @black.king, @black.bishop_two, @black.knight_two, @black.rook_two]]
     return new_board
   end
+  # def new_board
+  #   new_board = [[Rook.new("white", [0,0]), Knight.new("white", [1,0]), Bishop.new("white", [2,0]), Queen.new("white", [3,0]), King.new("white", [4,0]), Bishop.new("white", [5,0]), Knight.new("white", [6,0]), Rook.new("white", [7,0])],
+  #            [Pawn.new("white", [0,1]), Pawn.new("white", [1,1]), Pawn.new("white", [2,1]), Pawn.new("white", [3,1]), Pawn.new("white", [4,1]), Pawn.new("white", [5,1]), Pawn.new("white", [6,1]), Pawn.new("white", [7,1])],
+  #            [nil, nil, nil, nil, nil, nil, nil, nil],
+  #            [nil, nil, nil, nil, nil, nil, nil, nil],
+  #            [nil, nil, nil, nil, nil, nil, nil, nil],
+  #            [nil, nil, nil, nil, nil, nil, nil, nil],
+  #            [Pawn.new("black", [0,6]), Pawn.new("black", [1,6]), Pawn.new("black", [2,6]), Pawn.new("black", [3,6]), Pawn.new("black", [4,6]), Pawn.new("black", [5,6]), Pawn.new("black", [6,6]), Pawn.new("black", [7,6])],
+  #            [Rook.new("black", [0,7]), Knight.new("black", [1,7]), Bishop.new("black", [2,7]), Queen.new("black", [3,7]), King.new("black", [4,7]), Bishop.new("black", [5,7]), Knight.new("black", [6,7]), Rook.new("black", [7,7])]]
+  #   return new_board
+  # end
 
   def display_board
     row_number = 8
