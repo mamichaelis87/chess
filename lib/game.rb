@@ -5,8 +5,10 @@ require_relative 'bishop.rb'
 require_relative 'queen.rb'
 require_relative 'king.rb'
 require_relative 'player.rb'
+require_relative 'communication.rb'
 
 class Game
+  include Communication
   attr_accessor :board
 
   def initialize
@@ -18,15 +20,48 @@ class Game
   
   #game logic methods
   def start_game
-    
+    #while it is not over
+      #take turn
   end
 
   def turn(player)
+    #display board
     #ask for move
     #check to see if it is legal
-    #
+      # - not occupied by own color piece
+      # - does not move king into check
+    #make move
+    #if piece is captured, notify player
+    #see if king is in check and notify player
+    #update all the moves
   end
 
+  def game_over
+    #see if it is checkmate
+    #see if it is a draw
+    #if game is over, display board
+  end
+
+  def checkmate?
+  end
+
+  def stalemate?
+  end
+
+  def in_check(player, piece, move)
+    #checks to see if the king is in check
+  end
+
+  def legal_move(player, piece, move)
+    #space is in piece's potential moves
+    #move does not put own king in check
+  end
+
+  def execute_move
+    #updates the board with the move
+    #changes starting location to empty
+    #changes destination to include the piece
+  end
 
   #board methods
   def update_all_moves
@@ -69,49 +104,6 @@ class Game
       row_number -= 1
     end
     puts "  a b c d e f g h"
-  end
-
-  #game communication methods
-  def intro_message
-    puts "Welcome to terminal chess! It is played like normal chess, just on"\
-         "the terminal. (you probably figured that out without my help though)"\
-         "You will make moves based on the piece's letter/number coordinate."\
-         "For instance, if you want to move the left white knight, you would"\
-         "type 'b2'.  After you select a piece, you will enter a destination."\
-         "Once you select a piece, there is no going back, so think beforehand!"\
-         "Good luck, may the true chess wizard win!"
-  end
-
-  def illegal_move_alert
-    puts "That is not a legal move, try a different move."
-  end
-
-  def get_piece_to_move(player)
-    puts "It's your turn #{player.name}."
-    puts "Please enter the piece you would like to move."
-    gets.chomp
-  end
-
-  def get_destination_of_move
-    puts "Please enter where you would like to move your piece."
-  end
-
-  def piece_capture_message(attacking_piece, captured_piece)
-    puts "The #{attacking_piece.name} has captured the #{captured_piece.name}"
-  end
-
-  def blocked_path_message
-    puts "The path to that space is blocked. Try another destination."
-  end
-
-  def check_message(player)
-    puts "#{player.name}, your king is in check."
-  end
-
-  def check_mate(winner, loser)
-    puts "Checkmate! Congratulations #{winner.name}! You are a true chess wizard."\
-         "#{loser.name}, maybe you should learn some strategy..."\
-         "https://www.chess.com/terms/chess-strategy"
   end
 
 end
