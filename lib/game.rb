@@ -21,11 +21,14 @@ class Game
   #game logic methods
   def start_game
     #while it is not over
+    until game_over
       #take turn
+      display_board
+      take_turn
+    end
   end
 
   def turn(player)
-    #display board
     #ask for move
     #check to see if it is legal
       # - not occupied by own color piece
@@ -38,18 +41,53 @@ class Game
 
   def game_over
     #see if it is checkmate
-    #see if it is a draw
+    if checkmate?
+      display_board
+      return true
+    #see if it is a stalemate
+    elsif stalemate?
+      display_board
+      return true
     #if game is over, display board
+    else
+      return false
+    end
   end
 
   def checkmate?
+    #if king is in check
+    #and all kings moves are still in check
+      #iterate over moves and run in_check
+    #and no piece can move to block the king
+      #iterate over all player's moves and run in_check
+        #this should work for final part too
+    #if piece putting king in check cannot be captured
   end
 
   def stalemate?
+    #if king is not in check but all moves place it in check
+    #iterate over moves and run in_check
+    #and no piece can move to block the king
+      #iterate over all player's moves and run in_check
+        #this should work for final part too
+    #if piece putting king in check cannot be captured
   end
 
-  def in_check(player, piece, move)
+  def in_check(king)
     #checks to see if the king is in check
+      #iterates over all the pieces on the board and sees if king's location
+      #is in any of the potential moves
+    @board.each do |row|
+      row.each do |square|
+        if square
+          unless square.color == king.color
+            if square.potential_moves.include?(piece.location)
+              return true
+            end
+          end
+        end
+      end
+    end
   end
 
   def legal_move(player, piece, move)
