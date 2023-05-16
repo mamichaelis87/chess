@@ -5,8 +5,13 @@ class Rook < Piece
 
   def initialize(color, location)
     super
-    @potential_moves = update_moves
     @first_move = true
+    @potential_moves = update_moves
+    if color == "white"
+      @symbol = "\u2656"
+    else
+      @symbol = "\u265c"
+    end
   end
 
   def update_moves(current_board = @blank_board)
@@ -41,5 +46,5 @@ class Rook < Piece
 
 end
 
-black_left_rook = Rook.new("black", [0,7])
-p black_left_rook.potential_moves
+# black_left_rook = Rook.new("black", [0,7])
+# p black_left_rook.potential_moves

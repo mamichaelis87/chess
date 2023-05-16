@@ -1,10 +1,16 @@
+require_relative 'piece.rb'
 
-class Queen
+class Queen < Piece
   attr_accessor :potential_moves
 
   def initialize(color, location)
     super
     @potential_moves = update_moves
+    if color == "white"
+      @symbol = "\u2655"
+    else
+      @symbol = "\u265b"
+    end
   end
 
   def update_moves(current_board = @blank_board)
@@ -96,5 +102,5 @@ class Queen
 
 end
 
-white_queen = Queen.new("white", [3,0])
-p white_queen.potential_moves
+# white_queen = Queen.new("white", [3,0])
+# p white_queen.potential_moves

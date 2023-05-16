@@ -6,6 +6,11 @@ class Knight < Piece
   def initialize(color, location)
     super
     @potential_moves = update_moves
+    if color == "white"
+      @symbol = "\u2658"
+    else
+      @symbol = "\u265e"
+    end
   end
 
   def update_moves(current_board = @blank_board)
@@ -31,5 +36,5 @@ class Knight < Piece
 
 end
 
-white_left_knight = Knight.new("white", [1,0])
-p white_left_knight.potential_moves
+# white_left_knight = Knight.new("white", [1,0])
+# p white_left_knight.potential_moves

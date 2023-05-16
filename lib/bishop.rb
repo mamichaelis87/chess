@@ -1,10 +1,16 @@
+require_relative 'piece.rb'
 
-class Bishop
+class Bishop < Piece
   attr_accessor :potential_moves
 
   def initialize(color, location)
     super
     @potential_moves = update_moves
+    if color == "white"
+      @symbol = "\u2657"
+    else
+      @symbol = "\u265d"
+    end
   end
 
   def update_moves(current_board = @blank_board)
@@ -71,6 +77,6 @@ class Bishop
 
 end
 
-left_white_bishop = Bishop.new("white", [2,0])
-p left_white_bishop.potential_moves
+# left_white_bishop = Bishop.new("white", [2,0])
+# p left_white_bishop.potential_moves
 

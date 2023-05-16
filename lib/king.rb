@@ -1,11 +1,18 @@
+require_relative 'piece.rb'
 
-class King
+class King < Piece
   attr_accessor :potential_moves, :symbol, :first_move
 
   def initialize(color, location)
     super
-    @potential_moves = update_moves
     @first_move = true
+    @potential_moves = update_moves
+    if color == "white"
+      @symbol = "\u2654"
+    else
+      @symbol = "\u265a"
+    end
+    
   end
 
   def update_moves(current_board = @blank_board)
@@ -34,5 +41,5 @@ class King
 
 end
 
-white_king = King.new("white", [4,0])
-p white_king.potential_moves
+# white_king = King.new("white", [4,0])
+# p white_king.potential_moves

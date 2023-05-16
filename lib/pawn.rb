@@ -5,9 +5,13 @@ class Pawn < Piece
   
   def initialize(color, location) 
     super
-    @potential_moves = update_moves
     @first_move = true
-    
+    @potential_moves = update_moves
+    if color == "white"
+      @symbol = "\u2659"
+    else
+      @symbol = "\u265f"
+    end
   end
 
   def update_moves(current_board = @blank_board)
@@ -49,6 +53,7 @@ class Pawn < Piece
   end
 
   def could_attack_left(current_board)
+    return nil if current_board == @blank_board
     if @color == "white"
       piece = current_board[@location[0] - 1][@location[1] + 1]
     else 
@@ -64,6 +69,7 @@ class Pawn < Piece
   end
   
   def could_attack_right(current_board)
+    return nil if current_board == @blank_board
     if @color == "white"
       piece = current_board[@location[0] + 1][@location[1] + 1]
     else
@@ -80,17 +86,17 @@ class Pawn < Piece
 
 end
 
-white_pawn = Pawn.new("white", [0,1])
-black_pawn = Pawn.new("black", [1,6])
-p white_pawn.color
+# white_pawn = Pawn.new("white", [0,1])
+# black_pawn = Pawn.new("black", [1,6])
+# p white_pawn.color
 
-white_pawn.update_moves
-black_pawn.update_moves
+# white_pawn.update_moves
+# black_pawn.update_moves
 
-p white_pawn.potential_moves
-p black_pawn.potential_moves
+# p white_pawn.potential_moves
+# p black_pawn.potential_moves
 
-black_pawn.location = [1,5]
-black_pawn.first_move = false
-black_pawn.update_moves
-p black_pawn.potential_moves
+# black_pawn.location = [1,5]
+# black_pawn.first_move = false
+# black_pawn.update_moves
+# p black_pawn.potential_moves

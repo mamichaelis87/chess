@@ -6,11 +6,7 @@ class Piece
     @color = color
     @location = location
     @blank_board = create_blank_board
-    if color == "white"
-      @symbol = "\u2659"
-    else
-      @symbol = "\u265f"
-    end
+    
   end
 
   def occupied(current_board, square)
