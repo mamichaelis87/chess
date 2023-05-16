@@ -43,4 +43,9 @@ module Communication
          "https://www.chess.com/terms/chess-strategy"
   end
 
+  def move_executed(piece, destination)
+    conversion = destination #write out method to convert to letter/number format
+    puts "The #{piece.name} has moved to #{conversion}."
+  end
+
 end

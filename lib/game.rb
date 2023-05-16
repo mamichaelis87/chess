@@ -10,10 +10,10 @@ require_relative 'communication.rb'
 
 class Game
   include Communication
-  attr_accessor :board
+  attr_accessor :board, :white, :black
 
   def initialize
-    # intro_message
+    intro_message
     @white = WhitePlayer.new
     @black = BlackPlayer.new
     @board = new_board
@@ -104,12 +104,21 @@ class Game
       get_destination_of_move
     end
     #move does not put own king in check
+      #move piece
+      #run in_check
+      #move piece back and return result (true or false)
   end
 
-  def execute_move
+  def execute_move(piece, destination)
     #updates the board with the move
     #changes starting location to empty
+    @board[piece.location[1]][piece.location[0]] = nil
     #changes destination to include the piece
+    @board[destination[1]][destination[0]] = piece
+
+    piece.location = destination
+
+    move_executed(piece, destination)
   end
 
   #board methods
@@ -137,17 +146,6 @@ class Game
                 [@black.rook_one, @black.knight_one, @black.bishop_one, @black.queen, @black.king, @black.bishop_two, @black.knight_two, @black.rook_two]]
     return new_board
   end
-  # def new_board
-  #   new_board = [[Rook.new("white", [0,0]), Knight.new("white", [1,0]), Bishop.new("white", [2,0]), Queen.new("white", [3,0]), King.new("white", [4,0]), Bishop.new("white", [5,0]), Knight.new("white", [6,0]), Rook.new("white", [7,0])],
-  #            [Pawn.new("white", [0,1]), Pawn.new("white", [1,1]), Pawn.new("white", [2,1]), Pawn.new("white", [3,1]), Pawn.new("white", [4,1]), Pawn.new("white", [5,1]), Pawn.new("white", [6,1]), Pawn.new("white", [7,1])],
-  #            [nil, nil, nil, nil, nil, nil, nil, nil],
-  #            [nil, nil, nil, nil, nil, nil, nil, nil],
-  #            [nil, nil, nil, nil, nil, nil, nil, nil],
-  #            [nil, nil, nil, nil, nil, nil, nil, nil],
-  #            [Pawn.new("black", [0,6]), Pawn.new("black", [1,6]), Pawn.new("black", [2,6]), Pawn.new("black", [3,6]), Pawn.new("black", [4,6]), Pawn.new("black", [5,6]), Pawn.new("black", [6,6]), Pawn.new("black", [7,6])],
-  #            [Rook.new("black", [0,7]), Knight.new("black", [1,7]), Bishop.new("black", [2,7]), Queen.new("black", [3,7]), King.new("black", [4,7]), Bishop.new("black", [5,7]), Knight.new("black", [6,7]), Rook.new("black", [7,7])]]
-  #   return new_board
-  # end
 
   def display_board
     row_number = 8
