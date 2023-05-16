@@ -17,7 +17,7 @@ class Piece
     unless @blank_board.include?(square)
       return nil
     end
-    piece = current_board[square[0]][square[1]]
+    piece = current_board[square[1]][square[0]]
     if piece
       if piece.color == "black"
         return "black"

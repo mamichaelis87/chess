@@ -1,7 +1,7 @@
 require_relative 'piece.rb'
 
 class Bishop < Piece
-  attr_accessor :potential_moves, :symbol
+  attr_accessor :potential_moves, :symbol, :name
 
   def initialize(color, location)
     super
@@ -11,6 +11,7 @@ class Bishop < Piece
     else
       @symbol = "\u265d"
     end
+    @name = "#{@color} Bishop"
   end
 
   def update_moves(current_board = @blank_board)

@@ -1,7 +1,7 @@
 require_relative 'piece.rb'
 
 class Queen < Piece
-  attr_accessor :potential_moves, :symbol
+  attr_accessor :potential_moves, :symbol, :name
 
   def initialize(color, location)
     super
@@ -11,6 +11,7 @@ class Queen < Piece
     else
       @symbol = "\u265b"
     end
+    @name = "#{@color} Queen"
   end
 
   def update_moves(current_board = @blank_board)

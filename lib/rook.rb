@@ -1,8 +1,7 @@
 require_relative 'piece.rb'
 
 class Rook < Piece
-  attr_accessor :potential_moves, :first_move, :symbol
-
+  attr_accessor :potential_moves, :first_move, :symbol, :name
   def initialize(color, location)
     super
     @first_move = true
@@ -12,6 +11,7 @@ class Rook < Piece
     else
       @symbol = "\u265c"
     end
+    @name = "#{@color} Rook"
   end
 
   def update_moves(current_board = @blank_board)

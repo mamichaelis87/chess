@@ -1,7 +1,7 @@
 require_relative 'piece.rb'
 
 class Knight < Piece
-  attr_accessor :potential_moves, :symbol
+  attr_accessor :potential_moves, :symbol, :name
 
   def initialize(color, location)
     super
@@ -11,6 +11,7 @@ class Knight < Piece
     else
       @symbol = "\u265e"
     end
+    @name = "#{@color} Knight"
   end
 
   def update_moves(current_board = @blank_board)
