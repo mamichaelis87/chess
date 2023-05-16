@@ -57,7 +57,6 @@ module Communication
 
 
   def get_piece_to_move(player)
-    
     puts "#{player.name}, please enter the piece you would like to move."
     move = gets.chomp.downcase
     until is_on_board(move)
@@ -79,9 +78,22 @@ module Communication
     return move 
   end
 
-  def get_destination_of_move
-    puts "Please enter where you would like to move your piece."
+  def get_destination_of_move(player)
+    puts "#{player.name}, please enter where you would like to move your piece."
+    move = gets.chomp.downcase
+    until is_on_board(move)
+      puts "That is not a space on the board, please try again."
+      move = gets.chomp.downcase
+    end
     #converts input to [a,b]
+    move = convert_to_coordinates(move)
+    #check for validity of move
+    if legal_move(move)
+      return move
+    else
+      move = get_destination_of_move(player)
+    end
+    return move
   end
 
   def piece_capture_message(attacking_piece, captured_piece)
