@@ -22,7 +22,7 @@ module Communication
                   "f1","f2","f3","f4","f5","f6","f7","f8",
                   "g1","g2","g3","g4","g5","g6","g7","g8",
                   "h1","h2","h3","h4","h5","h6","h7","h8",]
-    return true if game_board.inlcude?(space)
+    return true if game_board.include?(space)
     false
   end
 
@@ -57,15 +57,26 @@ module Communication
 
 
   def get_piece_to_move(player)
-    puts "It's your turn #{player.name}."
-    puts "Please enter the piece you would like to move."
+    
+    puts "#{player.name}, please enter the piece you would like to move."
     move = gets.chomp.downcase
     until is_on_board(move)
       puts "That is not a space on the board, please try again."
       move = gets.chomp.downcase
     end
     #converts input to [a,b]
+    move = convert_to_coordinates(move)
     #checks if that space is occupied
+    if @board[move[1]][move[0]]
+      until @board[move[1]][move[0]].color == player.color
+        puts "#{player.name}, you do not have a piece in that space."
+        move = get_piece_to_move(player)
+      end
+    else 
+      puts "There are no pieces on that space."
+      move = get_piece_to_move(player)
+    end
+    return move 
   end
 
   def get_destination_of_move
