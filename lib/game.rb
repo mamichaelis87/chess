@@ -13,7 +13,7 @@ class Game
   attr_accessor :board, :white, :black
 
   def initialize
-    intro_message
+    #intro_message
     @white = WhitePlayer.new
     @black = BlackPlayer.new
     @board = new_board
@@ -22,24 +22,27 @@ class Game
   #game logic methods
   def start_game
     #while it is not over
+    player = @white
     until game_over
       #take turn
       display_board
-      take_turn
+      take_turn(player)
       #switch player
+      player == @white ? player = @black : player = @white
     end
   end
 
-  def turn(player)
+  def take_turn(player)
     #see if king is in check and notify player
+    check_message(player) if in_check(player.king)
     #ask for move
-    #check to see if it is legal
-      # - not occupied by own color piece
-      # - does not move king into check
+    piece = get_piece_to_move(player)
+    destination = get_destination_of_move(player)
     #make move
+    execute_move(piece, destination)
     #if piece is captured, notify player
     #update all the moves
-    
+    update_all_moves
   end
 
   def game_over
@@ -110,7 +113,8 @@ class Game
   end
 
   def execute_move(piece, destination)
-    #updates the board with the move
+    #updates the variable with the actual piece
+    piece = @board[piece[1]][piece[0]]
     #changes starting location to empty
     @board[piece.location[1]][piece.location[0]] = nil
     #changes destination to include the piece
@@ -149,7 +153,7 @@ class Game
 
   def display_board
     row_number = 8
-    @board.each do |row|
+    @board.reverse_each do |row|
       row_display = ""
       row.each do |square|
         if square
