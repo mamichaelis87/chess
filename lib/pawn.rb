@@ -53,34 +53,43 @@ class Pawn < Piece
   end
 
   def could_attack_left(current_board)
-    return nil if current_board == @blank_board
     if @color == "white"
-      piece = current_board[@location[0] - 1][@location[1] + 1]
-    else 
-      piece = current_board[@location[0] - 1][@location[1] - 1]
-    end
-    if piece 
-      if piece.color != @color
-        return true
+      if occupied(current_board, [@location[0] - 1, @location[1] + 1]) == "black"
+        true
+      end
+    elsif @color == "black"
+      if occupied(current_board, [@location[0] - 1, @location[1] - 1]) == "white"
+        true
       end
     else 
-      false
+      nil
     end
+    # return nil if current_board == @blank_board
+    # if @color == "white"
+    #   piece = current_board[@location[0] - 1][@location[1] + 1]
+    # else 
+    #   piece = current_board[@location[0] - 1][@location[1] - 1]
+    # end
+    # if piece 
+    #   if piece.color != @color
+    #     return true
+    #   end
+    # else 
+    #   false
+    # end
   end
   
   def could_attack_right(current_board)
-    return nil if current_board == @blank_board
     if @color == "white"
-      piece = current_board[@location[0] + 1][@location[1] + 1]
-    else
-      piece = current_board[@location[0] + 1][@location[1] - 1]
-    end
-    if piece 
-      if piece.color != @color
-        return true
+      if occupied(current_board, [@location[0] + 1, @location[1] + 1]) == "black"
+        true
       end
-    else
-      false
+    elsif @color == "black"
+      if occupied(current_board, [@location[0] + 1, @location[1] - 1]) == "white"
+        true
+      end
+    else 
+      nil
     end
   end
 
