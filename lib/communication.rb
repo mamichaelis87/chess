@@ -13,11 +13,59 @@ module Communication
     puts "That is not a legal move, try a different move."
   end
 
+  def is_on_board(space)
+    game_board = ["a1","a2","a3","a4","a5","a6","a7","a8",
+                  "b1","b2","b3","b4","b5","b6","b7","b8",
+                  "c1","c2","c3","c4","c5","c6","c7","c8",
+                  "d1","d2","d3","d4","d5","d6","d7","d8",
+                  "e1","e2","e3","e4","e5","e6","e7","e8",
+                  "f1","f2","f3","f4","f5","f6","f7","f8",
+                  "g1","g2","g3","g4","g5","g6","g7","g8",
+                  "h1","h2","h3","h4","h5","h6","h7","h8",]
+    return true if game_board.inlcude?(space)
+    false
+  end
+
+  def convert_to_coordinates(space)
+    coordinates = []
+    game_board = ["a1","a2","a3","a4","a5","a6","a7","a8",
+                  "b1","b2","b3","b4","b5","b6","b7","b8",
+                  "c1","c2","c3","c4","c5","c6","c7","c8",
+                  "d1","d2","d3","d4","d5","d6","d7","d8",
+                  "e1","e2","e3","e4","e5","e6","e7","e8",
+                  "f1","f2","f3","f4","f5","f6","f7","f8",
+                  "g1","g2","g3","g4","g5","g6","g7","g8",
+                  "h1","h2","h3","h4","h5","h6","h7","h8",]
+    conversion_number = game_board.index(space)
+    coordinates << conversion_number.div(8)
+    coordinates << conversion_number % 8 
+    return coordinates
+  end
+
+  def convert_to_letter_number_format(coordinates)
+    game_board = ["a1","a2","a3","a4","a5","a6","a7","a8",
+                  "b1","b2","b3","b4","b5","b6","b7","b8",
+                  "c1","c2","c3","c4","c5","c6","c7","c8",
+                  "d1","d2","d3","d4","d5","d6","d7","d8",
+                  "e1","e2","e3","e4","e5","e6","e7","e8",
+                  "f1","f2","f3","f4","f5","f6","f7","f8",
+                  "g1","g2","g3","g4","g5","g6","g7","g8",
+                  "h1","h2","h3","h4","h5","h6","h7","h8",]
+    space = coordinates[0] * 8 + coordinates[1]
+    return game_board[space]
+  end
+
+
   def get_piece_to_move(player)
     puts "It's your turn #{player.name}."
     puts "Please enter the piece you would like to move."
-    gets.chomp
+    move = gets.chomp.downcase
+    until is_on_board(move)
+      puts "That is not a space on the board, please try again."
+      move = gets.chomp.downcase
+    end
     #converts input to [a,b]
+    #checks if that space is occupied
   end
 
   def get_destination_of_move
