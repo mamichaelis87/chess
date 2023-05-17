@@ -10,7 +10,11 @@ module Communication
   end
 
   def illegal_move_alert
-    puts "That is not a legal move, try a different move."
+    puts "That is not a legal move, try a different one."
+  end
+
+  def places_in_check_alert
+    puts "That move puts your king in check, try a different one."
   end
 
   def is_on_board(space)
@@ -75,10 +79,10 @@ module Communication
       puts "There are no pieces on that space."
       move = get_piece_to_move(player)
     end
-    return move 
+    return move
   end
 
-  def get_destination_of_move(player)
+  def get_destination_of_move(player, piece)
     puts "#{player.name}, please enter where you would like to move your piece."
     move = gets.chomp.downcase
     until is_on_board(move)
@@ -88,10 +92,10 @@ module Communication
     #converts input to [a,b]
     move = convert_to_coordinates(move)
     #check for validity of move
-    if legal_move(move)
+    if legal_move(player, piece, move)
       return move
     else
-      move = get_destination_of_move(player)
+      move = get_destination_of_move(player, piece)
     end
     return move
   end
@@ -99,7 +103,7 @@ module Communication
   def piece_capture_message(attacking_piece, captured_piece)
     puts "The #{attacking_piece.name} has captured the #{captured_piece.name}"
   end
-
+  
   def blocked_path_message
     puts "The path to that space is blocked. Try another destination."
   end

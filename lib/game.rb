@@ -13,7 +13,7 @@ class Game
   attr_accessor :board, :white, :black
 
   def initialize
-    #intro_message
+    intro_message
     @white = WhitePlayer.new
     @black = BlackPlayer.new
     @board = new_board
@@ -23,7 +23,7 @@ class Game
   def start_game
     #while it is not over
     player = @white
-    until game_over
+    until game_over(player)
       #take turn
       display_board
       take_turn(player)
@@ -36,22 +36,25 @@ class Game
     #see if king is in check and notify player
     check_message(player) if in_check(player.king)
     #ask for move
-    piece = get_piece_to_move(player)
-    destination = get_destination_of_move(player)
-    #make move
-    execute_move(piece, destination)
-    #if piece is captured, notify player
+    start = get_piece_to_move(player)
+    piece = @board[start[1]][start[0]]
+    destination = get_destination_of_move(player, piece)
+    #make move (if piece is captured, notify player)
+    if @board[destination[1]][destination[0]]
+      piece_capture_message(piece, @board[destination[1]][destination[0]])
+    end
+    execute_move(start, destination)
     #update all the moves
     update_all_moves
   end
 
-  def game_over
+  def game_over(player)
     #see if it is checkmate
-    if checkmate?
+    if checkmate?(player)
       display_board
       return true
     #see if it is a stalemate
-    elsif stalemate?
+    elsif stalemate?(player)
       display_board
       return true
     #if game is over, display board
@@ -60,23 +63,38 @@ class Game
     end
   end
 
-  def checkmate?
+  def checkmate?(player)
     #if king is in check
+    return false unless in_check(player.king) 
+    #in_check returns true for every potential move a player can make
+    player.pieces.each do |piece|
+      piece.potential_moves.each do |move|
+        return false unless puts_in_check(player, piece, move)
+      end
+    end
     #and all kings moves are still in check
       #iterate over moves and run in_check
     #and no piece can move to block the king
       #iterate over all player's moves and run in_check
         #this should work for final part too
     #if piece putting king in check cannot be captured
+    return true
   end
 
-  def stalemate?
+  def stalemate?(player)
     #if king is not in check but all moves place it in check
+    return false if in_check(player.king)
     #iterate over moves and run in_check
+    player.pieces.each do |piece|
+      piece.potential_moves.each do |move|
+        return false unless puts_in_check(player, piece, move)
+      end
+    end
     #and no piece can move to block the king
       #iterate over all player's moves and run in_check
         #this should work for final part too
     #if piece putting king in check cannot be captured
+    return true
   end
 
   def in_check(king)
@@ -95,9 +113,37 @@ class Game
           return true
         end
       end
-    else
-      return false
     end
+    return false
+  end
+
+  def puts_in_check(player, piece, destination)
+    check = false
+    start = piece.location
+    #makes potential move
+    execute_move(piece.location, destination)
+    update_all_moves
+    if in_check(player.king)
+      check = true
+    end
+    #puts own piece back
+    execute_move(destination, start) 
+    #puts opponent piece back
+    if player.color == "white" 
+      @black.pieces do |piece|
+        if piece.location == destination
+          @board[destination[1]][destination[0]] = piece
+        end
+      end
+    elsif player.color == "black"
+      @white.pieces do |piece|
+        if piece.location == destination
+          @board[destination[1]][destination[0]] = piece
+        end
+      end
+    end
+    update_all_moves
+    return check
   end
 
   def legal_move(player, piece, move)
@@ -107,9 +153,11 @@ class Game
       get_destination_of_move
     end
     #move does not put own king in check
-      #move piece
-      #run in_check
-      #move piece back and return result (true or false)
+    if puts_in_check(player, piece, move)
+      places_in_check_alert
+      return false
+    end
+    true 
   end
 
   def execute_move(piece, destination)
@@ -121,8 +169,6 @@ class Game
     @board[destination[1]][destination[0]] = piece
 
     piece.location = destination
-
-    move_executed(piece, destination)
   end
 
   #board methods
