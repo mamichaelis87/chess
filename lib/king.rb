@@ -8,9 +8,9 @@ class King < Piece
     @first_move = true
     @potential_moves = update_moves
     if color == "white"
-      @symbol = "\u2654"
-    else
       @symbol = "\u265a"
+    else
+      @symbol = "\u2654"
     end
     @name = "#{@color} King"
   end

@@ -7,9 +7,9 @@ class Queen < Piece
     super
     @potential_moves = update_moves
     if color == "white"
-      @symbol = "\u2655"
-    else
       @symbol = "\u265b"
+    else
+      @symbol = "\u2655"
     end
     @name = "#{@color} Queen"
   end

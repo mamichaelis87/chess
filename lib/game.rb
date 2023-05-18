@@ -39,22 +39,43 @@ class Game
     start = get_piece_to_move(player)
     piece = @board[start[1]][start[0]]
     destination = get_destination_of_move(player, piece)
-    #make move (if piece is captured, notify player)
-    if @board[destination[1]][destination[0]]
-      piece_capture_message(piece, @board[destination[1]][destination[0]])
-    end
+    #make move
     execute_move(start, destination)
+    #if piece is captured, notify player)
+    remove_piece(player, piece, destination)
+    
     #update all the moves
     update_all_moves
+  end
+
+  def remove_piece(player, attacking_piece, destination)
+    #cycle through enemy pieces, if one had destination, change location to nil and notify player
+    if player.color == "white"
+      @black.pieces do |piece|
+        if piece.location == destination
+          piece.location = nil
+          piece_capture_message(attacking_piece, piece)
+        end
+      end
+    elsif player.color == "black"
+      @white.pieces do |piece|
+        if piece.location == destination
+          piece.location = nil
+          piece_capture_message(attacking_piece, piece)
+        end
+      end
+    end
   end
 
   def game_over(player)
     #see if it is checkmate
     if checkmate?(player)
+      puts "That's checkmate!"
       display_board
       return true
     #see if it is a stalemate
     elsif stalemate?(player)
+      puts "That's a stalemate!"
       display_board
       return true
     #if game is over, display board
@@ -129,28 +150,29 @@ class Game
     #puts own piece back
     execute_move(destination, start) 
     #puts opponent piece back
-    if player.color == "white" 
-      @black.pieces do |piece|
+    # if player.color == "white" 
+      @black.pieces.each do |piece|
+        if piece.location == destination
+          p piece.location
+          @board[destination[1]][destination[0]] = piece
+        end
+      end
+    # elsif player.color == "black"
+      @white.pieces.each do |piece|
         if piece.location == destination
           @board[destination[1]][destination[0]] = piece
         end
       end
-    elsif player.color == "black"
-      @white.pieces do |piece|
-        if piece.location == destination
-          @board[destination[1]][destination[0]] = piece
-        end
-      end
-    end
+    # end
     update_all_moves
     return check
   end
 
   def legal_move(player, piece, move)
     #space is in piece's potential moves
-    until piece.potential_moves.include?(move)
+    unless piece.potential_moves.include?(move)
       illegal_move_alert
-      get_destination_of_move
+      return false
     end
     #move does not put own king in check
     if puts_in_check(player, piece, move)
@@ -160,11 +182,11 @@ class Game
     true 
   end
 
-  def execute_move(piece, destination)
+  def execute_move(start, destination)
     #updates the variable with the actual piece
-    piece = @board[piece[1]][piece[0]]
+    piece = @board[start[1]][start[0]]
     #changes starting location to empty
-    @board[piece.location[1]][piece.location[0]] = nil
+    @board[start[1]][start[0]] = nil
     #changes destination to include the piece
     @board[destination[1]][destination[0]] = piece
 
@@ -175,14 +197,32 @@ class Game
   def update_all_moves
     #updates potential moves for each piece, probably will only be used
     #at the beginning of a game after set up
-    @board.each do |row|
-      row.each do |square|
-        if square
-          square.update_moves(@board)
-          # p square.potential_moves
-        end
-      end
+    # @board.each do |row|
+    #   row.each do |square|
+    #     if square
+    #       square.update_moves(@board)
+    #       # p square.potential_moves
+    #     end
+    #   end
+    # end
+    @white.pieces.each do |piece|
+      # check_moves = []
+      piece.update_moves(@board)
+      # piece.potential_moves.each do |move|
+      #   # check_moves << move if puts_in_check(@white, piece, move)
+      # end
+      # piece.potential_moves = piece.potential_moves - check_moves
     end
+
+    @black.pieces.each do |piece|
+      # check_moves = []
+      piece.update_moves(@board)
+      # piece.potential_moves.each do |move|
+      #   check_moves << move if puts_in_check(@black, piece, move)
+      # end
+      # piece.potential_moves = piece.potential_moves - check_moves
+    end
+
   end
 
   def new_board

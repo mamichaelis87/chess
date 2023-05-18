@@ -7,9 +7,9 @@ class Knight < Piece
     super
     @potential_moves = update_moves
     if color == "white"
-      @symbol = "\u2658"
-    else
       @symbol = "\u265e"
+    else
+      @symbol = "\u2658"
     end
     @name = "#{@color} Knight"
   end

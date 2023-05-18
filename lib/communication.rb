@@ -69,14 +69,24 @@ module Communication
     end
     #converts input to [a,b]
     move = convert_to_coordinates(move)
+    piece = @board[move[1]][move[0]]
     #checks if that space is occupied
-    if @board[move[1]][move[0]]
-      until @board[move[1]][move[0]].color == player.color
+    if piece
+      until piece.color == player.color
         puts "#{player.name}, you do not have a piece in that space."
         move = get_piece_to_move(player)
       end
     else 
       puts "There are no pieces on that space."
+      move = get_piece_to_move(player)
+    end
+    moves_that_put_king_in_check = []
+    piece.potential_moves.each do |move|
+      moves_that_put_king_in_check << move if puts_in_check(player, piece, move)
+      end
+    piece.potential_moves = piece.potential_moves - moves_that_put_king_in_check
+    if piece.potential_moves.empty?
+      puts "That piece has no legal moves, choose a different one."
       move = get_piece_to_move(player)
     end
     return move
@@ -92,9 +102,7 @@ module Communication
     #converts input to [a,b]
     move = convert_to_coordinates(move)
     #check for validity of move
-    if legal_move(player, piece, move)
-      return move
-    else
+    unless legal_move(player, piece, move)
       move = get_destination_of_move(player, piece)
     end
     return move

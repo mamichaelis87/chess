@@ -7,9 +7,9 @@ class Bishop < Piece
     super
     @potential_moves = update_moves
     if color == "white"
-      @symbol = "\u2657"
-    else
       @symbol = "\u265d"
+    else
+      @symbol = "\u2657"
     end
     @name = "#{@color} Bishop"
   end

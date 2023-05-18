@@ -8,9 +8,9 @@ class Pawn < Piece
     @first_move = true
     @potential_moves = update_moves
     if color == "white"
-      @symbol = "\u2659"
-    else
       @symbol = "\u265f"
+    else
+      @symbol = "\u2659"
     end
     @name = "#{@color} Pawn"
   end
@@ -50,6 +50,7 @@ class Pawn < Piece
         new_moves << [@location[0]+1, @location[1]-1] if @blank_board.include?([@location[0]+1, @location[1]-1])
       end
     end 
+    
     @potential_moves = new_moves
   end
 

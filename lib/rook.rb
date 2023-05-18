@@ -7,9 +7,9 @@ class Rook < Piece
     @first_move = true
     @potential_moves = update_moves
     if color == "white"
-      @symbol = "\u2656"
-    else
       @symbol = "\u265c"
+    else
+      @symbol = "\u2656"
     end
     @name = "#{@color} Rook"
   end
