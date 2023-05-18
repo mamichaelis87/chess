@@ -43,22 +43,30 @@ class Game
     execute_move(start, destination)
     #if piece is captured, notify player)
     remove_piece(player, piece, destination)
-    
+
+    if piece.is_a?(Pawn) || piece.is_a?(Rook) || piece.is_a?(King)
+      piece.first_move = false
+    end
     #update all the moves
     update_all_moves
   end
 
   def remove_piece(player, attacking_piece, destination)
     #cycle through enemy pieces, if one had destination, change location to nil and notify player
+    p "remove_piece called"
     if player.color == "white"
-      @black.pieces do |piece|
+      p "#{player.name} took a piece." 
+      @black.pieces.each do |piece|
+        p piece.name
+        p piece.location
         if piece.location == destination
+          
           piece.location = nil
           piece_capture_message(attacking_piece, piece)
         end
       end
     elsif player.color == "black"
-      @white.pieces do |piece|
+      @white.pieces.each do |piece|
         if piece.location == destination
           piece.location = nil
           piece_capture_message(attacking_piece, piece)
@@ -153,7 +161,6 @@ class Game
     # if player.color == "white" 
       @black.pieces.each do |piece|
         if piece.location == destination
-          p piece.location
           @board[destination[1]][destination[0]] = piece
         end
       end
@@ -191,6 +198,7 @@ class Game
     @board[destination[1]][destination[0]] = piece
 
     piece.location = destination
+  
   end
 
   #board methods
@@ -207,7 +215,7 @@ class Game
     # end
     @white.pieces.each do |piece|
       # check_moves = []
-      piece.update_moves(@board)
+      piece.update_moves(@board) if piece.location
       # piece.potential_moves.each do |move|
       #   # check_moves << move if puts_in_check(@white, piece, move)
       # end
@@ -216,7 +224,7 @@ class Game
 
     @black.pieces.each do |piece|
       # check_moves = []
-      piece.update_moves(@board)
+      piece.update_moves(@board) if piece.location
       # piece.potential_moves.each do |move|
       #   check_moves << move if puts_in_check(@black, piece, move)
       # end

@@ -75,10 +75,12 @@ module Communication
       until piece.color == player.color
         puts "#{player.name}, you do not have a piece in that space."
         move = get_piece_to_move(player)
+        piece = @board[move[1]][move[0]]
       end
     else 
       puts "There are no pieces on that space."
       move = get_piece_to_move(player)
+      piece = @board[move[1]][move[0]]
     end
     moves_that_put_king_in_check = []
     piece.potential_moves.each do |move|
