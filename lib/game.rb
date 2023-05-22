@@ -53,22 +53,18 @@ class Game
 
   def remove_piece(player, attacking_piece, destination)
     #cycle through enemy pieces, if one had destination, change location to nil and notify player
-    p "remove_piece called"
+    
     if player.color == "white"
-      p "#{player.name} took a piece." 
       @black.pieces.each do |piece|
-        p piece.name
-        p piece.location
         if piece.location == destination
-          
-          piece.location = nil
+          @black.pieces.delete(piece)
           piece_capture_message(attacking_piece, piece)
         end
       end
     elsif player.color == "black"
       @white.pieces.each do |piece|
         if piece.location == destination
-          piece.location = nil
+          @white.pieces.delete(piece)
           piece_capture_message(attacking_piece, piece)
         end
       end
@@ -150,7 +146,7 @@ class Game
     check = false
     start = piece.location
     #makes potential move
-    execute_move(piece.location, destination)
+    execute_move(start, destination)
     update_all_moves
     if in_check(player.king)
       check = true
