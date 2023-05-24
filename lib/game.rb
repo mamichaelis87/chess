@@ -47,8 +47,30 @@ class Game
     if piece.is_a?(Pawn) || piece.is_a?(Rook) || piece.is_a?(King)
       piece.first_move = false
     end
+
+    if piece.is_a?(Pawn)
+      pawn_change
+    end
+
+    castle_moves = [[2,0], [6,0], [2,7], [6,7]]
+    if piece.is_a?(King) && castle_moves.include?(destination)
+      castle_rook(player, destination)
+    end
     #update all the moves
     update_all_moves
+  end
+
+  def castle_rook(player, destination)
+    case destination
+    when [2,0]
+      execute_move(@white.rook_one.location, [3,0])
+    when [6,0]
+      execute_move(@white.rook_two.location, [5,7])
+    when [2,7]
+      execute_move(@black.rook_one.location, [3,7])
+    when [6,7]
+      execute_move(@black.rook_two.location, [5,7])
+    end
   end
 
   def remove_piece(player, attacking_piece, destination)
@@ -201,7 +223,7 @@ class Game
     new_piece = nil
     choices = ["queen", "bishop", "knight", "rook", "pawn"]
     square = [destination[0], destination[1]]
-    if player == @white && piece.is_a?(Pawn) && destination[1] == 7
+    if player == @white && destination[1] == 7
       puts "Your pawn reached the end of the board, please \n"\
            "enter the piece you would like to change it to. \n"\
            "To keep a pawn, enter 'pawn'."
@@ -228,7 +250,7 @@ class Game
       @board[square[1]][square[0]] = new_piece
       @white.pieces = @white.pieces - piece 
       @white.pieces << new_piece
-    elsif player == @black && piece.is_a?(Pawn) && destination[1] == 0
+    elsif player == @black&& destination[1] == 0
       puts "Your pawn reached the end of the board, please \n"\
            "enter the piece you would like to change it to. \n"\
            "To keep a pawn, enter 'pawn'."
