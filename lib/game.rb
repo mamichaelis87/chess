@@ -47,7 +47,7 @@ class Game
 
 
     if piece.is_a?(Pawn)
-      pawn_change
+      pawn_change(player, piece, destination)
     end
 
     castle_moves = [[2,0], [6,0], [2,7], [6,7]]
@@ -67,7 +67,7 @@ class Game
     when [2,0]
       execute_move(@white.rook_one.location, [3,0])
     when [6,0]
-      execute_move(@white.rook_two.location, [5,7])
+      execute_move(@white.rook_two.location, [5,0])
     when [2,7]
       execute_move(@black.rook_one.location, [3,7])
     when [6,7]
@@ -150,13 +150,13 @@ class Game
     #checks to see if the king is in check
       #iterates over all the enemy pieces and sees if king's location
       #is in any of the potential moves
-    if king.color == "white"
+    if player == @white
       @black.pieces.each do |piece|
         if piece.potential_moves.include?(square)
           return true
         end
       end
-    elsif king.color == "black"
+    elsif player == @black
       @white.pieces.each do |piece|
         if piece.potential_moves.include?(square)
           return true
@@ -224,7 +224,7 @@ class Game
   def pawn_change(player, piece, destination)
     new_piece = nil
     choices = ["queen", "bishop", "knight", "rook", "pawn"]
-    square = [destination[0], destination[1]]
+    square = destination
     if player == @white && destination[1] == 7
       puts "Your pawn reached the end of the board, please \n"\
            "enter the piece you would like to change it to. \n"\
@@ -232,7 +232,7 @@ class Game
       new_piece = gets.chomp.downcase
       until choices.include?(new_piece)
         puts "That is not a valid choice, please enter a game piece.\n"\
-             "(king, queen, bishop, knight, rook, or pawn)"
+             "(queen, bishop, knight, rook, or pawn)"
         new_piece = gets.chomp.downcase
       end
 
@@ -250,7 +250,7 @@ class Game
         new_piece = piece
       end
       @board[square[1]][square[0]] = new_piece
-      @white.pieces = @white.pieces - piece 
+      @white.pieces = @white.pieces - [piece] 
       @white.pieces << new_piece
     elsif player == @black&& destination[1] == 0
       puts "Your pawn reached the end of the board, please \n"\
@@ -277,7 +277,7 @@ class Game
         new_piece = piece
       end
       @board[square[1]][square[0]] = new_piece
-      @black.pieces = @black.pieces - piece 
+      @black.pieces = @black.pieces - [piece] 
       @black.pieces << new_piece
     end
   end
