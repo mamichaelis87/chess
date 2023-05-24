@@ -34,19 +34,17 @@ class Game
 
   def take_turn(player)
     #see if king is in check and notify player
-    check_message(player) if in_check(player.king.location)
+    check_message(player) if in_check(player, player.king.location)
     #ask for move
     start = get_piece_to_move(player)
     piece = @board[start[1]][start[0]]
+    
     destination = get_destination_of_move(player, piece)
     #make move
     execute_move(start, destination)
     #if piece is captured, notify player)
     remove_piece(player, piece, destination)
 
-    if piece.is_a?(Pawn) || piece.is_a?(Rook) || piece.is_a?(King)
-      piece.first_move = false
-    end
 
     if piece.is_a?(Pawn)
       pawn_change
@@ -55,6 +53,10 @@ class Game
     castle_moves = [[2,0], [6,0], [2,7], [6,7]]
     if piece.is_a?(King) && castle_moves.include?(destination)
       castle_rook(player, destination)
+    end
+    
+    if piece.is_a?(Pawn) || piece.is_a?(Rook) || piece.is_a?(King)
+      piece.first_move = false
     end
     #update all the moves
     update_all_moves
@@ -112,7 +114,7 @@ class Game
 
   def checkmate?(player)
     #if king is in check
-    return false unless in_check(player.king.location) 
+    return false unless in_check(player, player.king.location) 
     #in_check returns true for every potential move a player can make
     player.pieces.each do |piece|
       piece.potential_moves.each do |move|
@@ -130,7 +132,7 @@ class Game
 
   def stalemate?(player)
     #if king is not in check but all moves place it in check
-    return false if in_check(player.king.location)
+    return false if in_check(player, player.king.location)
     #iterate over moves and run in_check
     player.pieces.each do |piece|
       piece.potential_moves.each do |move|
@@ -144,7 +146,7 @@ class Game
     return true
   end
 
-  def in_check(square)
+  def in_check(player, square)
     #checks to see if the king is in check
       #iterates over all the enemy pieces and sees if king's location
       #is in any of the potential moves
@@ -170,7 +172,7 @@ class Game
     #makes potential move
     execute_move(start, destination)
     update_all_moves
-    if in_check(player.king.location)
+    if in_check(player, player.king.location)
       check = true
     end
     #puts own piece back
@@ -284,27 +286,27 @@ class Game
     #if it is king and rooks first move  
     #if no pieces are between king and rook
     #if king is not in check
-    return if in_check(player.king.location)
+    return if in_check(player, player.king.location)
 
     if player == @white && player.king.first_move
       if player.rook_one.first_move && @board[0][1] == nil && @board[0][2] == nil && @board[0][3] == nil
-        unless in_check([[3,0]]) || in_check([2,0])
+        unless in_check(player, [[3,0]]) || in_check(player, [2,0])
           player.king.potential_moves << [2, 0]
         end
       end
       if player.rook_two.first_move && @board[0][5] == nil && @board[0][6] == nil
-        unless in_check([[5,0]]) || in_check([6,0])  
+        unless in_check(player, [[5,0]]) || in_check(player, [6,0])  
           player.king.potential_moves << [6, 0]
         end
       end
     elsif player == @black && player.king.first_move
       if player.rook_one.first_move && @board[7][1] == nil && @board[7][2] == nil && @board[7][3] == nil
-        unless in_check([2,7]) || in_check([3,7])
+        unless in_check(player, [2,7]) || in_check(player, [3,7])
         player.king.potential_moves << [2, 7]
         end
       end
       if player.rook_two.first_move && @board[7][5] == nil && @board[7][6] == nil
-        unless in_check([[5,7]]) || in_check([6,7])
+        unless in_check(player, [[5,7]]) || in_check(player, [6,7])
         player.king.potential_moves << [6, 7]
         end
       end
@@ -347,7 +349,8 @@ class Game
       # end
       # piece.potential_moves = piece.potential_moves - check_moves
     end
-
+    add_castle_moves(@white)
+    add_castle_moves(@black)
   end
 
   def new_board
