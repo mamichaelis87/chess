@@ -34,7 +34,7 @@ class Game
 
   def take_turn(player)
     #see if king is in check and notify player
-    check_message(player) if in_check(player.king)
+    check_message(player) if in_check(player.king.location)
     #ask for move
     start = get_piece_to_move(player)
     piece = @board[start[1]][start[0]]
@@ -90,7 +90,7 @@ class Game
 
   def checkmate?(player)
     #if king is in check
-    return false unless in_check(player.king) 
+    return false unless in_check(player.king.location) 
     #in_check returns true for every potential move a player can make
     player.pieces.each do |piece|
       piece.potential_moves.each do |move|
@@ -108,7 +108,7 @@ class Game
 
   def stalemate?(player)
     #if king is not in check but all moves place it in check
-    return false if in_check(player.king)
+    return false if in_check(player.king.location)
     #iterate over moves and run in_check
     player.pieces.each do |piece|
       piece.potential_moves.each do |move|
@@ -122,19 +122,19 @@ class Game
     return true
   end
 
-  def in_check(king)
+  def in_check(square)
     #checks to see if the king is in check
       #iterates over all the enemy pieces and sees if king's location
       #is in any of the potential moves
     if king.color == "white"
       @black.pieces.each do |piece|
-        if piece.potential_moves.include?(king.location)
+        if piece.potential_moves.include?(square)
           return true
         end
       end
     elsif king.color == "black"
       @white.pieces.each do |piece|
-        if piece.potential_moves.include?(king.location)
+        if piece.potential_moves.include?(square)
           return true
         end
       end
@@ -148,7 +148,7 @@ class Game
     #makes potential move
     execute_move(start, destination)
     update_all_moves
-    if in_check(player.king)
+    if in_check(player.king.location)
       check = true
     end
     #puts own piece back
@@ -199,7 +199,7 @@ class Game
 
   def pawn_change(player, piece, destination)
     new_piece = nil
-    choices = ["king", "queen", "bishop", "knight", "rook", "pawn"]
+    choices = ["queen", "bishop", "knight", "rook", "pawn"]
     square = [destination[0], destination[1]]
     if player == @white && piece.is_a?(Pawn) && destination[1] == 7
       puts "Your pawn reached the end of the board, please \n"\
@@ -213,8 +213,6 @@ class Game
       end
 
       case new_piece
-      when "king" 
-        new_piece = King.new("white", square)
       when "queen"
         new_piece = Queen.new("white", square)
       when "bishop"
@@ -223,6 +221,7 @@ class Game
         new_piece = Knight.new("white", square)
       when "rook"
         new_piece = Rook.new("white", square)
+        new_piece.first_move = false
       else 
         new_piece = piece
       end
@@ -236,13 +235,11 @@ class Game
       new_piece = gets.chomp.downcase
       until choices.include?(new_piece)
         puts "That is not a valid choice, please enter a game piece.\n"\
-             "(king, queen, bishop, knight, rook, or pawn)"
+             "(queen, bishop, knight, rook, or pawn)"
         new_piece = gets.chomp.downcase
       end
 
       case new_piece
-      when "king" 
-        new_piece = King.new("black", square)
       when "queen"
         new_piece = Queen.new("black", square)
       when "bishop"
@@ -251,6 +248,7 @@ class Game
         new_piece = Knight.new("black", square)
       when "rook"
         new_piece = Rook.new("black", square)
+        new_piece.first_move = false
       else 
         new_piece = piece
       end
@@ -258,6 +256,44 @@ class Game
       @black.pieces = @black.pieces - piece 
       @black.pieces << new_piece
     end
+  end
+
+  def add_castle_moves(player)
+    #if it is king and rooks first move  
+    #if no pieces are between king and rook
+    #if king is not in check
+    return if in_check(player.king.location)
+
+    if player == @white && player.king.first_move
+      if player.rook_one.first_move && @board[0][1] == nil && @board[0][2] == nil && @board[0][3] == nil
+        unless in_check([[3,0]]) || in_check([2,0])
+          player.king.potential_moves << [2, 0]
+        end
+      end
+      if player.rook_two.first_move && @board[0][5] == nil && @board[0][6] == nil
+        unless in_check([[5,0]]) || in_check([6,0])  
+          player.king.potential_moves << [6, 0]
+        end
+      end
+    elsif player == @black && player.king.first_move
+      if player.rook_one.first_move && @board[7][1] == nil && @board[7][2] == nil && @board[7][3] == nil
+        unless in_check([2,7]) || in_check([3,7])
+        player.king.potential_moves << [2, 7]
+        end
+      end
+      if player.rook_two.first_move && @board[7][5] == nil && @board[7][6] == nil
+        unless in_check([[5,7]]) || in_check([6,7])
+        player.king.potential_moves << [6, 7]
+        end
+      end
+    end
+    #if no spaces the king passes over are in check
+    #king moves two spaces toward rook, rook moves to the opposite side of the king
+  end
+
+  def en_passant(player, piece, destination)
+    #if enemy pawn skips over possible attack to move next to you,
+    #you can move behind that pawn and capture it in the process
   end
 
   #board methods

@@ -1,7 +1,7 @@
 require_relative 'piece.rb'
 
 class King < Piece
-  attr_accessor :potential_moves, :symbol, :first_move, :name
+  attr_accessor :potential_moves, :symbol, :first_move, :name, :castling
 
   def initialize(color, location)
     super
@@ -13,6 +13,7 @@ class King < Piece
       @symbol = "\u2654"
     end
     @name = "#{@color} King"
+    @castling = false
   end
 
   def update_moves(current_board = @blank_board)
