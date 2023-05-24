@@ -197,6 +197,69 @@ class Game
   
   end
 
+  def pawn_change(player, piece, destination)
+    new_piece = nil
+    choices = ["king", "queen", "bishop", "knight", "rook", "pawn"]
+    square = [destination[0], destination[1]]
+    if player == @white && piece.is_a?(Pawn) && destination[1] == 7
+      puts "Your pawn reached the end of the board, please \n"\
+           "enter the piece you would like to change it to. \n"\
+           "To keep a pawn, enter 'pawn'."
+      new_piece = gets.chomp.downcase
+      until choices.include?(new_piece)
+        puts "That is not a valid choice, please enter a game piece.\n"\
+             "(king, queen, bishop, knight, rook, or pawn)"
+        new_piece = gets.chomp.downcase
+      end
+
+      case new_piece
+      when "king" 
+        new_piece = King.new("white", square)
+      when "queen"
+        new_piece = Queen.new("white", square)
+      when "bishop"
+        new_piece = Bishop.new("white", square)
+      when "knight"
+        new_piece = Knight.new("white", square)
+      when "rook"
+        new_piece = Rook.new("white", square)
+      else 
+        new_piece = piece
+      end
+      @board[square[1]][square[0]] = new_piece
+      @white.pieces = @white.pieces - piece 
+      @white.pieces << new_piece
+    elsif player == @black && piece.is_a?(Pawn) && destination[1] == 0
+      puts "Your pawn reached the end of the board, please \n"\
+           "enter the piece you would like to change it to. \n"\
+           "To keep a pawn, enter 'pawn'."
+      new_piece = gets.chomp.downcase
+      until choices.include?(new_piece)
+        puts "That is not a valid choice, please enter a game piece.\n"\
+             "(king, queen, bishop, knight, rook, or pawn)"
+        new_piece = gets.chomp.downcase
+      end
+
+      case new_piece
+      when "king" 
+        new_piece = King.new("black", square)
+      when "queen"
+        new_piece = Queen.new("black", square)
+      when "bishop"
+        new_piece = Bishop.new("black", square)
+      when "knight"
+        new_piece = Knight.new("black", square)
+      when "rook"
+        new_piece = Rook.new("black", square)
+      else 
+        new_piece = piece
+      end
+      @board[square[1]][square[0]] = new_piece
+      @black.pieces = @black.pieces - piece 
+      @black.pieces << new_piece
+    end
+  end
+
   #board methods
   def update_all_moves
     #updates potential moves for each piece, probably will only be used
@@ -211,7 +274,7 @@ class Game
     # end
     @white.pieces.each do |piece|
       # check_moves = []
-      piece.update_moves(@board) if piece.location
+      piece.update_moves(@board) 
       # piece.potential_moves.each do |move|
       #   # check_moves << move if puts_in_check(@white, piece, move)
       # end
@@ -220,7 +283,7 @@ class Game
 
     @black.pieces.each do |piece|
       # check_moves = []
-      piece.update_moves(@board) if piece.location
+      piece.update_moves(@board) 
       # piece.potential_moves.each do |move|
       #   check_moves << move if puts_in_check(@black, piece, move)
       # end
