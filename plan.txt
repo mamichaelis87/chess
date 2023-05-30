@@ -1,18 +1,33 @@
 Chess Game Plan
 
+bug to fix
+  - i think something in the program is not allowing me to move into a space that would put the board into a stalemate
+        -  when i would have done this, it said "that is not a legal move"
+  
+
+remaining features 
+  - add code for pawn becoming another piece at end of the board (done but not tested)
+  - add code for castling
+  - add code for en passant
+
+potential add ons?
+  keep a 'stack' of captured pieces on the side
+  lots of fun conditional snarky comments from the computer
+
 step 1: Create initial pieces to the game 
   Create Board 
     should this be part of the Game class? or it's own class?
-    8x8, 8 arrays of 8
+    8x8, 8 arrays of 8 - done
     gets letter and number, converts it to a coordinate
     would it help to have hashes containing all pieces of a particular color?
       a 'white' hash could be iterated over to see if the black king is in check
-  Create Pawn class
-  Create Rook class
-  Create Knight class
-  Create Bishop class
-  Create King class
-  Create Queen class
+  Create Pawn class - done
+  Create Rook class - done
+  Create Knight class - done
+  Create Bishop class - done
+  Create King class - done
+  Create Queen class - done
+  should I have a piece class? Which the others inherit?
 
 step 2: Write psuedocode for each piece's move method
   general
@@ -78,6 +93,11 @@ step 3: write psuedocode for game logic methods
       move king out of check
       block check with another piece
       capture piece blocking king
+  game flow
+    set up board
+    update all moves
+    move piece
+    update all moves
 
 step 4: turn psuedocode into Ruby code
 
