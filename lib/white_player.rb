@@ -10,7 +10,7 @@ class WhitePlayer
                 :queen, :king, :bishop_two, :knight_two, :rook_two,
                 :pawn_one, :pawn_two, :pawn_three, :pawn_four,
                 :pawn_five, :pawn_six, :pawn_seven, :pawn_eight,
-                :pieces
+                :pieces, :turn
   
   def initialize
     @name = get_name
@@ -35,6 +35,7 @@ class WhitePlayer
     @pieces = [@rook_one, @knight_one, @bishop_one, @queen, @king, @bishop_two,
               @knight_two, @rook_two, @pawn_one, @pawn_two, @pawn_three, @pawn_four,
               @pawn_five, @pawn_six, @pawn_seven, @pawn_eight]
+    @turn = true
   end
 
   def get_name

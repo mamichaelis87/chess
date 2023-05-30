@@ -7,6 +7,7 @@ require_relative 'king.rb'
 require_relative 'white_player.rb'
 require_relative 'black_player.rb'
 require_relative 'communication.rb'
+require 'yaml'
 
 class Game
   include Communication
@@ -22,13 +23,19 @@ class Game
   #game logic methods
   def start_game
     #while it is not over
-    player = @white
+    @white.turn ? player = @white : player = @black
     until game_over(player)
       #take turn
       display_board
-      take_turn(player)
-      #switch player
-      player == @white ? player = @black : player = @white
+      if @white.turn 
+        take_turn(@white)
+        @white.turn = false 
+        player = @black
+      else
+        take_turn(@black)
+        @white.turn = true
+        player = @white
+      end
     end
   end
 
@@ -381,5 +388,9 @@ class Game
     end
     puts "  a b c d e f g h"
   end
+
+  # def save_game
+  #   File.open('saved_game.yaml', 'w') {|file| YAML.dump(self, file)}
+  # end
 
 end

@@ -133,4 +133,7 @@ module Communication
     puts "The #{piece.name} has moved to #{conversion}."
   end
 
+  def display_captured_pieces 
+  end
+
 end
