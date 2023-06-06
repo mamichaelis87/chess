@@ -389,8 +389,17 @@ class Game
     puts "  a b c d e f g h"
   end
 
-  # def save_game
-  #   File.open('saved_game.yaml', 'w') {|file| YAML.dump(self, file)}
-  # end
+  def save_game
+    File.open('saved_board', 'wb') {|file| file.write(Marshal.dump(@board))}
+    File.open('saved_white', 'wb') {|file| file.write(Marshal.dump(@white))}
+    File.open('saved_black', 'wb') {|file| file.write(Marshal.dump(@black))}
+  end
+
+  def load_game
+    @board = Marshal.load(File.binread('saved_board'))
+    @white = Marshal.load(File.binread('saved_white'))
+    @black = Marshal.load(File.binread('saved_black'))
+  end
 
 end
+
