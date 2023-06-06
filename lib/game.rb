@@ -7,7 +7,6 @@ require_relative 'king.rb'
 require_relative 'white_player.rb'
 require_relative 'black_player.rb'
 require_relative 'communication.rb'
-require 'yaml'
 
 class Game
   include Communication
@@ -17,7 +16,10 @@ class Game
     intro_message
     @white = WhitePlayer.new
     @black = BlackPlayer.new
-    @board = new_board
+    @board = new_board 
+    if new_load == 'y'
+      load_game
+    end
   end
   
   #game logic methods
@@ -28,11 +30,17 @@ class Game
       #take turn
       display_board
       if @white.turn 
-        take_turn(@white)
+        if take_turn(@white) == "save"
+          save_game
+          break
+        end
         @white.turn = false 
         player = @black
       else
-        take_turn(@black)
+        if take_turn(@black) == "save"
+          save_game
+          break
+        end
         @white.turn = true
         player = @white
       end
@@ -44,6 +52,9 @@ class Game
     check_message(player) if in_check(player, player.king.location)
     #ask for move
     start = get_piece_to_move(player)
+    if start == "save"
+      return start
+    end
     piece = @board[start[1]][start[0]]
     
     destination = get_destination_of_move(player, piece)

@@ -6,7 +6,8 @@ module Communication
          "For instance, if you want to move the left white knight, you would\n"\
          "type 'b2'.  After you select a piece, you will enter a destination.\n"\
          "Once you select a piece, there is no going back, so think beforehand!\n"\
-         "Good luck, may the true chess wizard win!"
+         "Good luck, may the true chess wizard win!\n"\
+         "(Type 'save' at the start of your turn to save game)"
   end
 
   def illegal_move_alert
@@ -63,9 +64,13 @@ module Communication
   def get_piece_to_move(player)
     puts "#{player.name}, please enter the piece you would like to move."
     move = gets.chomp.downcase
-    until is_on_board(move)
+    until is_on_board(move) || move == "save"
       puts "That is not a space on the board, please try again."
       move = gets.chomp.downcase
+    end
+    if move == "save"
+      puts "Thanks for playing, come back soon!"
+      return move
     end
     #converts input to [a,b]
     move = convert_to_coordinates(move)
@@ -136,4 +141,14 @@ module Communication
   def display_captured_pieces 
   end
 
+  def new_load
+    puts "Would you like to load a game? (y/n).\n"\
+         "Choosing no will Start a new game and delete any saved data."
+    answer = gets.chomp.downcase
+    until answer == "y" || answer == "n"
+      puts "Please answer 'y' or 'n'"
+      answer = gets.chomp.downcase
+    end
+    answer
+  end
 end
